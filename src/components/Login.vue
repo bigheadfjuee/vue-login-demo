@@ -59,21 +59,30 @@ export default {
   created() {
     // reset login status
     // console.log("created");
-
     // this.logout();
   },
   methods: {
     // ...mapActions("account", ["login", "logout"]),
     doLogin(obj) {
-      // this.$http.post("http://192.168.3.99:8090/api/auth/login", obj).then((response) => {
-      this.$http.post("http://192.168.3.99:8090/api/auth/login", obj).then((res) => {
-        console.log(res.data.status);
-        if(res.data.status =='ok')
-        {
-          // alert('Login')
-          this.$router.push('/scenes')
-        }
-      });
+      this.$http
+        .post("http://192.168.3.99:8090/api/auth/login", obj)
+        .then((res) => {
+          console.log(res.data.status);
+          if (res.data.status == "ok") {
+             this.$toast.open( {
+             message: 'Login success',
+             position: 'bottom-right',
+             type: 'success'
+           })
+            this.$router.push("/scenes");
+          } else {
+           this.$toast.open( {
+             message: 'Login failed',
+             position: 'bottom-right',
+             type: 'error'
+           })
+          }
+        });
     },
     handleSubmit() {
       this.submitted = true;
